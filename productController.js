@@ -6,8 +6,6 @@ const repo = require('./productRepo');
 
 const Product = require('./product');
 
-products: Product[10] = [];
-
 router.post("", (req, res) => {
     const newProduct = new Product(req.body.name, req.body.price);
     repo.add(newProduct, () => {
@@ -29,9 +27,10 @@ router.put("", (req, res) => {
 });
 
 router.delete("", (req, res) => {
-    var productIndex = this.products.indexOf(p => p.name == req.body.name);
-    this.products.splice(productIndex, 1);
-    res.status(200).send(this.products);
+    const id = req.body._id;
+    repo.delete(id, () => {
+        res.status(200).send();
+    })
 });
 
 module.exports = router;

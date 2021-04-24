@@ -27,3 +27,10 @@ exports.update = (product, callback) => {
             return callback();
         });
 }
+
+exports.delete = (id, callback) => {
+    const collection = db.getCollection();
+    collection.deleteOne({ _id: ObjectId(id) }).then(() => {
+        callback();
+    });
+}
