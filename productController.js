@@ -16,17 +16,16 @@ router.post("", (req, res) => {
 });
 
 router.get("", (req, res) => {
-    res.status(200).send(this.products);
+    repo.get((products) => {
+        res.status(200).send(products);
+    })
 });
 
 router.put("", (req, res) => {
-    for (let i = 0; i < this.products.length; i++) {
-        if (req.body.name == this.products[i].name) {
-            this.products[i].price = req.body.price;
-            break;
-        }
-    }
-    res.status(200).send(this.products);
+    const productToUpdate = new Product(req.body.name, req.body.price, req.body._id);
+    repo.update(productToUpdate, () => {
+        res.status(200).send();
+    })
 });
 
 router.delete("", (req, res) => {

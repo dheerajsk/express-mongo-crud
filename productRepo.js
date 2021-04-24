@@ -1,4 +1,5 @@
 
+const { ObjectId } = require('mongodb');
 const db = require('./mongodb');
 
 exports.add = (product, callback) => {
@@ -7,4 +8,22 @@ exports.add = (product, callback) => {
         console.log("Product added");
         return callback("OK")
     });
+}
+
+exports.get = (callback) => {
+    const collection = db.getCollection();
+    collection.find().toArray().then((products) => {
+        return callback(products);
+    })
+}
+
+exports.update = (product, callback) => {
+    const collection = db.getCollection();
+    console.log(product._id);
+    collection.findOneAndUpdate({ _id: ObjectId(product._id) }, {
+        $set: { name: product.name, price: product.price }
+    }, {})
+        .then(() => {
+            return callback();
+        });
 }
